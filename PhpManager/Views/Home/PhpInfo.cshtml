@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Php Info";
+}
+
+
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title">
+            </hgroup>
+                <p class="summary">View all PHP configuration information</p>
+        </div>
+    </section>
+}
+
+<script type="text/javascript">
+
+    $(document).ready(function() {
+        $('iframe').load(function() {
+            this.style.height =
+                this.contentWindow.document.body.offsetHeight + 'px';
+        });
+    });
+</script>
+
+<iframe src="~/PhpInfo.php" seamless="seamless" scrolling="no">
+  <p>Your browser does not support iframes.</p>
+</iframe>

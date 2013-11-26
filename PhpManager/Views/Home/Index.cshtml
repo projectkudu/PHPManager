@@ -1,0 +1,93 @@
+﻿@using System.Configuration
+@model PhpManager.Models.PhpSettings
+
+@{
+    ViewBag.Title = "Home";
+}
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <p class="summary">Check the PHP runtime settings and configure PHP runtime directives</p>
+        </div>
+    </section>
+}
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/Home/Index.js"></script>
+}
+
+<div class="content-wrapper setting-content">
+    <div class="float-left">
+        <img class="setting" src="~/Images/setting.png" />
+    </div>
+    <div class="float-left">
+        <h2>PHP Setup</h2>
+        <ul>
+            <li>PHP version: @ViewBag.PhpVersion</li>
+            <li>PHP executable: @ViewBag.PhpExe</li>
+            <li>View @Html.ActionLink("PHP Info", "PhpInfo", "Home")</li>
+        </ul>
+    </div>
+</div>
+
+<div class="content-wrapper setting-content">
+    <div class="float-left">
+        <img class="setting" src="~/Images/gears-2.png" />
+    </div>
+    <div class="float-left">
+        <h2>PHP Settings</h2>
+        <ul>
+            <li>@Html.ActionLink("Modify PHP settings", "Settings", "Home")</li>
+            <li>@Html.ActionLink("Configure Error Reporting", "ErrorReporting", "Home")</li>
+            <li class="term-value-list">
+                View:
+                <ul>
+                    <li>
+                        System settings file:
+                        <div class="float-right">
+                            @Html.ActionLink(Path.GetFileName(Model.PhpSystemSettingsFile), "PhpIni", "Home")
+                        </div>
+                    </li>
+                    <li>
+                        Configuration file:
+                        <div class="float-right">
+                            @Html.ActionLink(Path.GetFileName(Model.PhpUserSettingsFile), "UserIni", "Home")
+                        </div>
+                    </li>
+                    <li>
+                        Error log:
+                        <div class="float-right">
+                            @Html.ActionLink(Path.GetFileName(Model.GetSettingValue("error_log").Replace("\"", "")), "PhpErrorLog", "Home")
+                        </div>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+
+
+<div class="content-wrapper setting-content">
+    <div class="float-left">
+        <img class="setting" src="~/Images/drill.png" />
+    </div>
+    <div class="float-left">
+        <h2>PHP Extensions</h2>
+        <ul>
+            <li>
+                @Model.GetExtensions().Where(e => e.Enabled == true).Count() extensions installed - <a id="showExtensions">Show all</a>
+
+                <ul id="extensions">
+                    @foreach (var extension in Model.GetExtensions())
+                    {
+                        if (extension.Enabled)
+                        {
+                            <li>@extension.Name</li>
+                        }
+                    }
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+﻿@using System.Web.UI.WebControls
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title</title>
+    <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
+    <meta name="viewport" content="width=device-width" />
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+</head>
+<body>
+    <header>
+        @RenderSection("scripts", required: false)
+    </header>
+    <div id="header">
+        <div class="content-wrapper">
+            <div class="float-left">
+                <p class="site-title">@Html.ActionLink("PHP Manager", "Index", "Home")</p>
+            </div>
+            <div class="float-right">
+                <nav>
+                    @{
+                        var menuLinks = new[]
+                                {
+                                    new
+                                    {
+                                        Title = "Home",
+                                        Action = "Index",
+                                        Controller = "Home"
+                                    },
+                                    new
+                                    {
+                                        Title = "PHP Settings",
+                                        Action = "Settings",
+                                        Controller = "Home"
+                                    },
+                                    new
+                                    {
+                                        Title = "PHP Info",
+                                        Action = "PhpInfo",
+                                        Controller = "Home"
+                                    },
+                                };
+                    }
+                    <table id="menu">
+                        <tr>
+                            @foreach (var menuItem in menuLinks)
+                            {
+                                var itemClass = String.Empty;
+                                if (menuItem.Title.Equals(ViewBag.Title, StringComparison.OrdinalIgnoreCase))
+                                {
+                                    itemClass = "active";
+                                }
+                                <td class="@itemClass">@Html.ActionLink(menuItem.Title, menuItem.Action, menuItem.Controller)</td>
+                            }
+                        </tr>
+                    </table>
+                </nav>
+            </div>
+        </div>
+    </div>
+    <div id="body">
+        @RenderSection("featured", required: false)
+        <section class="content-wrapper main-content clear-fix">
+            @RenderBody()
+        </section>
+    </div>
+    <footer class="content-wrapper">
+        <div class="footer">
+            <div class="float-left">
+                <p>&copy; @DateTime.Now.Year - Microsoft</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

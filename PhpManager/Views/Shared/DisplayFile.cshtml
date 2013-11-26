@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = ViewBag.FileName;
+}
+
+<div class="setting-content">
+    <h2>Contents of @ViewBag.FileName</h2>
+    <hr/>
+    <div>
+        <pre>
+    @foreach (var line in ViewBag.FileContents)
+    {
+        @line
+    }
+    </pre>
+    </div>
+</div>
+<hr/>

@@ -1,0 +1,53 @@
+﻿@using PhpManager.Models
+@model PhpManager.Models.PhpSettings
+
+@{
+    ViewBag.Title = "Error Reporting";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <p class="summary">Configure how PHP reports and logs errors, warnings and information notices</p>
+        </div>
+    </section>
+}
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/Home/ErrorReporting.js"></script>
+    <script type="text/javascript">
+        //Need to define this url here since Razor can determine the url value correctly but javascript might not based on the extension directory
+        var setModeUrl = '@Url.Action("SetMode", "Home")';
+    </script>
+}
+
+
+<div class="setting-content">
+    <h2>Type of Server</h2>
+    <p>Select a server type. This will influence how the errors will be reported and logged</p>
+    <div>
+        
+        <h3>
+            @Html.RadioButton("settingMode", "Development", @Model.GetCurrentMode() == PhpSettings.Mode.Development)
+            @*<input type="radio" name="settingMode" value="Development" />*@
+            Development Machine
+        </h3>
+        <p class="radioDescription">
+            This is a development machine. A verbose error reporting will be used. 
+            All errors, warnings and informational notices will be output in a web
+            browser and also will be written into a log file.
+        </p>
+
+        <h3>
+            @Html.RadioButton("settingMode", "Production", @Model.GetCurrentMode() == PhpSettings.Mode.Production)
+            @*<input type="radio" name="settingMode" value="Production" />*@
+            Production Machine
+        </h3>
+        <p class="radioDescription">
+            This is a production server accessible from the internet. Only
+            errors will be written to a log file. No errors, warnings, or
+            notices will be output in a web browser.
+        </p>
+    </div>
+</div>

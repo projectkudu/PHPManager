@@ -1,0 +1,113 @@
+﻿@model PhpManager.Models.PhpSettings
+
+@{
+    ViewBag.Title = "Php Settings";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <p class="summary">Modify your PHP settings or add new ones</p>
+        </div>
+    </section>
+}
+
+@section scripts
+{
+    <script type="text/javascript" src="~/Scripts/Home/Settings.js"></script>
+    <script type="text/javascript">
+        //Need to define this url here since Razor can determine the url value correctly but javascript might not based on the extension directory
+        var saveSettingUrl = '@Url.Action("SaveSettingValue", "Home")';
+        var revertAllSettingUrl = '@Url.Action("RevertAllSettings", "Home")';
+    </script>
+}
+
+<div class="setting-content">
+    <h2>Add New Setting</h2>
+    <p><em>Can only add official settings from <a href="http://www.php.net/manual/en/ini.list.php">php.net</a></em></p>
+    <div class="content-wrapper">
+        <table>
+            <tr>
+                <td>Name:</td>
+                <td>
+                    <select class="newSetting" id="newName">
+                        @foreach (var settingName in @Model.GetAllUnusedPhpSettingNames())
+                        {
+                            if (@Model.IsSettingUpdatable(settingName))
+                            {
+                            <option value="@settingName">@settingName</option>
+                                }
+                            }
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Value: </td>
+                <td>
+                    <input class="newSetting" id="newValue" type="text" placeholder="value" /></td>
+            </tr>
+            <tr>
+                <td>Section:</td>
+                <td>
+                    <input class="newSetting" id="newSection" type="text" placeholder="section name" />
+
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button id="newSettingBtn" class="newSetting save">Save</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<div class="setting-content">
+    <h2>Modify Existing Settings</h2>
+    <p>Settings that can only be modified at the system level cannot be changed</p>
+    <input id="revertAllSettings" type="button" value="Revert to default settings" />
+
+    <div class="center">
+        <table class="setting">
+
+            @foreach (var sections in @Model.GetAllDefinedSettings().OrderBy(setting => setting.Name).GroupBy(setting => setting.Section))
+            {
+                <tr>
+                    <td colspan="5">
+                        <h3>@sections.Key</h3>
+                    </td>
+                </tr>
+                foreach (var setting in @sections)
+                {
+                <tr>
+                    @{
+                    var disableInput = !Model.IsSettingUpdatable(setting.Name);
+                    }
+                    <td><a href="http://www.php.net/@setting.Name">@setting.Name</a></td>
+                    <td>
+                        <input 
+                                id="@setting.Name-input" 
+                                class="settingEntry"
+                                type="text" 
+                                name="@setting.Name-Value" 
+                                data-savedvalue="@setting.Value" 
+                                value="@setting.Value"
+                                disabled="@disableInput"
+                                />
+                    </td>
+                    <td>
+                        <img class="statusNone"    id="@setting.Name-statusNone"                          src="~/Images/blank-m.png" />
+                        <img class="statusFail"    id="@setting.Name-statusFail"    style="display: none" src="~/Images/x-mark-m.png"/>
+                        <img class="statusSuccess" id="@setting.Name-statusSuccess" style="display: none" src="~/Images/check-mark-3-m.png"/>
+                    </td>
+                    <td>
+                        <button id="@setting.Name-btn" class="save" disabled="@disableInput">Save</button>
+                    </td>
+                    <td class="error" id="@setting.Name-errorMsg"></td>
+                </tr>
+                }
+            }
+        </table>
+    </div>
+</div>
+
