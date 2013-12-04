@@ -13,6 +13,12 @@ namespace PhpManager.Controllers
     public class HomeController : Controller
     {
         private PhpSettings _phpSettings = new PhpSettings();
+        private readonly string WebConfigPath;
+
+        public HomeController()
+        {
+            WebConfigPath = Environment.ExpandEnvironmentVariables(@"%HOME%\site\wwwroot\web.config");
+        }
 
         public ActionResult Index()
         {
@@ -22,6 +28,80 @@ namespace PhpManager.Controllers
             ViewBag.PhpExe = PhpSettings.GetPhpExePath();
 
             return View(_phpSettings);
+        }
+
+        public ActionResult About()
+        {
+            ViewBag.Message = "Your app description page.";
+
+            return View();
+        }
+
+        public ActionResult PhpInfo()
+        {
+            ViewBag.Message = "Your PHP Info";
+            return View();
+        }
+
+        public ActionResult Import()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Import(HTAccessModel model)
+        {
+            var convert = new ConversionManager();
+            string exstWebConfig = WebConfigPath;
+            string webconfig = string.Empty;
+
+            if (System.IO.File.Exists(exstWebConfig))
+            {
+                using (var reader = new StreamReader(exstWebConfig))
+                {
+                    webconfig = reader.ReadToEnd();
+                }
+            }
+
+            string htaccess = string.Empty;
+            using (var reader = new StreamReader(model.UploadedFile.InputStream))
+            {
+                htaccess = reader.ReadToEnd();
+            }
+
+            string output = convert.GenerateOrUpdateWebConfig(webconfig, htaccess);
+
+            return View(new HTAccessModel { HTAccessFile = htaccess, WebConfigFile = output, Path = exstWebConfig });
+        }
+
+        [HttpPost]
+        [ValidateInput(false)]
+        public ActionResult SaveWebConfig(HTAccessModel model)
+        {
+            if (model.AcceptTerms)
+            {
+                try
+                {
+                    using (var stream = System.IO.File.CreateText(WebConfigPath))
+                    {
+                        stream.Write(model.WebConfigFile);
+                    }
+                    ViewBag.AlertType = "success";
+                    ViewBag.Message = "Web.config saved successfully!";
+                }
+                catch (Exception)
+                {
+                    ViewBag.Message = "Error saving web.config file.";
+                    ViewBag.AlertType = "danger";
+                }
+            }
+            else
+            {
+                ViewBag.Message = "Please indicate you understand the file will be overwritten.";
+                ViewBag.AlertType = "danger";
+            }
+
+            return View("Import", model);
         }
 
         public ActionResult Settings()
@@ -42,27 +122,6 @@ namespace PhpManager.Controllers
         public ActionResult PhpErrorLog()
         {
             return DisplayFile(_phpSettings.GetSettingValue("error_log"));
-        }
-
-        private ActionResult DisplayFile(string filePath)
-        {
-            filePath = filePath.Replace("\"", "");
-            ViewBag.FileContents = FileReader.ReadFile(filePath);
-            ViewBag.FileName = filePath;
-            return View("~/Views/Shared/DisplayFile.cshtml");
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your app description page.";
-
-            return View();
-        }
-
-        public ActionResult PhpInfo()
-        {
-            ViewBag.Message = "Your PHP Info";
-            return View();
         }
 
         public ActionResult ErrorReporting()
@@ -125,6 +184,14 @@ namespace PhpManager.Controllers
             }
 
             return Json(new { Success = success, ErrorMessage = errMsg });
+        }
+
+        private ActionResult DisplayFile(string filePath)
+        {
+            filePath = filePath.Replace("\"", "");
+            ViewBag.FileContents = FileReader.ReadFile(filePath);
+            ViewBag.FileName = filePath;
+            return View("~/Views/Shared/DisplayFile.cshtml");
         }
     }
 }

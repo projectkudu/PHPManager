@@ -1,0 +1,55 @@
+﻿@model PhpManager.Models.HTAccessModel
+@{
+
+    ViewBag.Title = "Import mod_rewrite";
+}
+
+@section featured {
+    <section class="featured">
+        <div class="content-wrapper">
+            <hgroup class="title"></hgroup>
+            <p class="summary">Convert .htaccess mod_rewrite settings to web.config rewrite rules</p>
+        </div>
+    </section>
+}
+
+<div class="content-wrapper setting-content">
+
+    @if (ViewBag.AlertType != null && ViewBag.Message != null)
+    { 
+        <div class="alert alert-@ViewBag.AlertType">
+            @ViewBag.Message
+        </div>
+    }
+
+    <h2>Rules to Import</h2>
+    @using (Html.BeginForm("Import", "Home", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "form-inline" }))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.UploadedFile, new { @class = "sr-only" })
+            @Html.TextBoxFor(m => m.UploadedFile, new { type = "file", style = "width:200px;" })
+        </div>
+        <button type="submit" class="btn btn-default" style="width: 75px;">Import</button>
+    }
+
+    @using (Html.BeginForm("SaveWebConfig", "Home", FormMethod.Post, new { role = "form", @class = "form" }))
+    {
+        <div class="form-group">
+            @Html.LabelFor(m => m.HTAccessFile, new { @class = "sr-only" })
+            @Html.TextAreaFor(m => m.HTAccessFile, new { @class = "form-control", rows = 10, @readonly = "readonly" })
+        </div>
+
+        <h2>Converted Rules</h2>
+
+        <div class="form-group">
+            @Html.LabelFor(m => m.WebConfigFile)
+            @Html.TextAreaFor(m => m.WebConfigFile, new { @class = "form-control", rows = 20, @readonly = "readonly" })
+        </div>
+        <div class="checkbox">
+            <label>
+                @Html.CheckBoxFor(m => m.AcceptTerms) I understand that existing &lt;rewrite&gt; settings have been removed and may cause adverse effects to my application.
+            </label>
+        </div>
+        <button type="submit" class="btn btn-default">Save</button>
+    }
+</div>
