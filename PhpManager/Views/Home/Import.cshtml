@@ -27,7 +27,7 @@
     {
         <div class="form-group">
             @Html.LabelFor(m => m.UploadedFile, new { @class = "sr-only" })
-            @Html.TextBoxFor(m => m.UploadedFile, new { type = "file", style = "width:200px;" })
+            @Html.TextBoxFor(m => m.UploadedFile, new { type = "file", style = "width:200px;", accept = ".htaccess" })
         </div>
         <button type="submit" class="btn btn-default" style="width: 75px;">Import</button>
     }
