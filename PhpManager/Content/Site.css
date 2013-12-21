@@ -1,4 +1,5 @@
-﻿html {
+﻿
+html {
     background-color: #e8e7e8;
     margin: 0;
     padding: 0;
@@ -377,6 +378,23 @@ textarea {
         padding-right: 0;
         margin-left: 0;
         margin-right: 0;
+    }
+ 
+.form-group {
+    display: block;
+}
+
+    .form-group .inline {
+        display: inline-block;
+    }
+
+    .form-group textarea {
+        margin: 1em 0em 2em 0em;
+    }
+
+    form .checkbox {
+        margin: 1em 0em 2em 0em;
+        width: 500px;
     }
 
 /* info and errors */

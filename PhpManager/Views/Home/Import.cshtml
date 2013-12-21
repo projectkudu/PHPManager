@@ -7,7 +7,6 @@
 @section featured {
     <section class="featured">
         <div class="content-wrapper">
-            <hgroup class="title"></hgroup>
             <p class="summary">Convert .htaccess mod_rewrite settings to web.config rewrite rules</p>
         </div>
     </section>
@@ -15,31 +14,42 @@
 
 <div class="content-wrapper setting-content">
 
+    <h2>Rules to Import</h2>
+
     @if (ViewBag.AlertType != null && ViewBag.Message != null)
-    { 
+    {
         <div class="alert alert-@ViewBag.AlertType">
             @ViewBag.Message
         </div>
     }
 
-    <h2>Rules to Import</h2>
+    <p>Import an <code>.htaccess</code> file, or type the <em>mod_rewrite</em> rules into the <code>.htaccess</code> text field.</p>
+
     @using (Html.BeginForm("Import", "Home", FormMethod.Post, new { enctype = "multipart/form-data", role = "form", @class = "form-inline" }))
     {
         <div class="form-group">
-            @Html.LabelFor(m => m.UploadedFile, new { @class = "sr-only" })
-            @Html.TextBoxFor(m => m.UploadedFile, new { type = "file", style = "width:200px;", accept = ".htaccess" })
+            @Html.LabelFor(m => m.UploadedFile, new { @class = "inline" })
+            @Html.TextBoxFor(m => m.UploadedFile, new { @class = "inline", type = "file", style = "width:200px;", accept = ".htaccess" })
+            <button type="submit" class="btn btn-default inline" style="width: 75px;">Import</button>
         </div>
-        <button type="submit" class="btn btn-default" style="width: 75px;">Import</button>
     }
 
     @using (Html.BeginForm("SaveWebConfig", "Home", FormMethod.Post, new { role = "form", @class = "form" }))
     {
         <div class="form-group">
-            @Html.LabelFor(m => m.HTAccessFile, new { @class = "sr-only" })
-            @Html.TextAreaFor(m => m.HTAccessFile, new { @class = "form-control", rows = 10, @readonly = "readonly" })
+            @Html.LabelFor(m => m.HTAccessFile)
+            @Html.TextAreaFor(m => m.HTAccessFile, new { @class = "form-control", rows = 10 })
         </div>
 
         <h2>Converted Rules</h2>
+        
+        <p>Importing the above <code>.htaccess</code> file has done one of the following actions:
+            <ul>
+                <li>Created a new <code>web.config</code> file in the site root (<code>D:\home\site\wwwwroot</code>)</li>
+                <li>Added a <code>system.webServer > rewrite</code> section to an existing <code>web.config</code></li>
+                <li>Overwrote the <code>system.webServer > rewrite</code> section in an existing <code>web.config</code></li>
+            </ul>
+        </p>
 
         <div class="form-group">
             @Html.LabelFor(m => m.WebConfigFile)
@@ -47,9 +57,10 @@
         </div>
         <div class="checkbox">
             <label>
-                @Html.CheckBoxFor(m => m.AcceptTerms) I understand that existing &lt;rewrite&gt; settings have been removed and may cause adverse effects to my application.
+                @Html.CheckBoxFor(m => m.AcceptTerms) I understand that any existing <code>&lt;rewrite&gt;</code> rules have been overwritten and may cause adverse effects to the application.
             </label>
         </div>
         <button type="submit" class="btn btn-default">Save</button>
     }
+
 </div>

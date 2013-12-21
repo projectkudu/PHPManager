@@ -20,7 +20,7 @@
         [DisplayName("I understand that any existing <rewrite> settings were removed and saving this file may cause adverse effects to my application.")]
         public bool AcceptTerms { get; set; }
 
-        [DisplayName("Configuration file:")]
+        [DisplayName("Configuration file")]
         public HttpPostedFileBase UploadedFile { get; set; }
     }
 }

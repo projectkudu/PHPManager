@@ -87,7 +87,7 @@ namespace PhpManager.Controllers
                         stream.Write(model.WebConfigFile);
                     }
                     ViewBag.AlertType = "success";
-                    ViewBag.Message = "Web.config saved successfully!";
+                    ViewBag.Message = "<h3>Save Successful!</h3><p>To ensure that this file persists across deployments, please <a href=\"/vfs/site/wwwroot/web.config\">download</a> the <code>web.config</code> file to replace your local copy.</p>";
                 }
                 catch (Exception)
                 {
