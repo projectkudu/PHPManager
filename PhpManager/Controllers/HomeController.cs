@@ -13,11 +13,11 @@ namespace PhpManager.Controllers
     public class HomeController : Controller
     {
         private PhpSettings _phpSettings = new PhpSettings();
-        private readonly string WebConfigPath;
+        private string WebConfigPath;
 
         public HomeController()
         {
-            WebConfigPath = Environment.ExpandEnvironmentVariables(@"%HOME%\site\wwwroot\web.config");
+
         }
 
         public ActionResult Index()
@@ -49,29 +49,24 @@ namespace PhpManager.Controllers
         }
 
         [HttpPost]
+        [ValidateInput(false)]
         public ActionResult Import(HTAccessModel model)
         {
-            var convert = new ConversionManager();
-            string exstWebConfig = WebConfigPath;
-            string webconfig = string.Empty;
+            ModelState.Clear();
 
-            if (System.IO.File.Exists(exstWebConfig))
+            if (model.UploadedFile != null)
             {
-                using (var reader = new StreamReader(exstWebConfig))
+                string htaccess = string.Empty;
+                using (var reader = new StreamReader(model.UploadedFile.InputStream))
                 {
-                    webconfig = reader.ReadToEnd();
+                    htaccess = reader.ReadToEnd();
                 }
+
+                model.HTAccessFile = htaccess;
             }
+            model.WebConfigFile = ConvertHTAccessToWebConfig(model.HTAccessFile);
 
-            string htaccess = string.Empty;
-            using (var reader = new StreamReader(model.UploadedFile.InputStream))
-            {
-                htaccess = reader.ReadToEnd();
-            }
-
-            string output = convert.GenerateOrUpdateWebConfig(webconfig, htaccess);
-
-            return View(new HTAccessModel { HTAccessFile = htaccess, WebConfigFile = output, Path = exstWebConfig });
+            return View(model);
         }
 
         [HttpPost]
@@ -82,6 +77,8 @@ namespace PhpManager.Controllers
             {
                 try
                 {
+                    GetWebConfigPath();
+
                     using (var stream = System.IO.File.CreateText(WebConfigPath))
                     {
                         stream.Write(model.WebConfigFile);
@@ -89,9 +86,9 @@ namespace PhpManager.Controllers
                     ViewBag.AlertType = "success";
                     ViewBag.Message = "<h3>Save Successful!</h3><p>To ensure that this file persists across deployments, please <a href=\"/vfs/site/wwwroot/web.config\">download</a> the <code>web.config</code> file to replace your local copy.</p>";
                 }
-                catch (Exception)
+                catch (IOException ioe)
                 {
-                    ViewBag.Message = "Error saving web.config file.";
+                    ViewBag.Message = string.Format("Error saving web.config file. Output: {0}", ioe.Message);
                     ViewBag.AlertType = "danger";
                 }
             }
@@ -102,6 +99,12 @@ namespace PhpManager.Controllers
             }
 
             return View("Import", model);
+        }
+
+        private void GetWebConfigPath()
+        {
+            var home = Environment.GetEnvironmentVariable("HOME", EnvironmentVariableTarget.Machine);
+            WebConfigPath = Path.Combine(home, "site", "wwwroot", "web.config");
         }
 
         public ActionResult Settings()
@@ -192,6 +195,24 @@ namespace PhpManager.Controllers
             ViewBag.FileContents = FileReader.ReadFile(filePath);
             ViewBag.FileName = filePath;
             return View("~/Views/Shared/DisplayFile.cshtml");
+        }
+
+        private string ConvertHTAccessToWebConfig(string htaccess)
+        {
+            var convert = new ConversionManager();
+            GetWebConfigPath();
+            string exstWebConfig = WebConfigPath;
+            string webconfig = string.Empty;
+
+            if (System.IO.File.Exists(exstWebConfig))
+            {
+                using (var reader = new StreamReader(exstWebConfig))
+                {
+                    webconfig = reader.ReadToEnd();
+                }
+            }
+
+            return convert.GenerateOrUpdateWebConfig(webconfig, htaccess);
         }
     }
 }

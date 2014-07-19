@@ -19,7 +19,7 @@
     @if (ViewBag.AlertType != null && ViewBag.Message != null)
     {
         <div class="alert alert-@ViewBag.AlertType">
-            @ViewBag.Message
+            @Html.Raw(ViewBag.Message)
         </div>
     }
 
@@ -39,6 +39,7 @@
         <div class="form-group">
             @Html.LabelFor(m => m.HTAccessFile)
             @Html.TextAreaFor(m => m.HTAccessFile, new { @class = "form-control", rows = 10 })
+            <input formmethod="post" formaction="Import" formenctype="multipart/form-data" type="submit" value="Refresh" />
         </div>
 
         <h2>Converted Rules</h2>
@@ -53,7 +54,8 @@
 
         <div class="form-group">
             @Html.LabelFor(m => m.WebConfigFile)
-            @Html.TextAreaFor(m => m.WebConfigFile, new { @class = "form-control", rows = 20, @readonly = "readonly" })
+            @Html.TextAreaFor(m => m.WebConfigFile, new { @class = "form-control", rows = 20 })
+            @Html.HiddenFor(m => m.WebConfigFile)
         </div>
         <div class="checkbox">
             <label>

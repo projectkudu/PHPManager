@@ -141,7 +141,10 @@
     <Content Include="PhpInfo.php" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="applicationHost.xdt" />
+    <Content Include="applicationHost.xdt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\PublishProfiles\File.pubxml" />
     <None Include="Properties\PublishProfiles\PhpSettings.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Home\ErrorReporting.js" />
