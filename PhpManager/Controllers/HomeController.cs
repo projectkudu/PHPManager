@@ -52,8 +52,6 @@ namespace PhpManager.Controllers
         [ValidateInput(false)]
         public ActionResult Import(HTAccessModel model)
         {
-            ModelState.Clear();
-
             if (model.UploadedFile != null)
             {
                 string htaccess = string.Empty;
@@ -63,6 +61,10 @@ namespace PhpManager.Controllers
                 }
 
                 model.HTAccessFile = htaccess;
+            }
+            else
+            {
+                ModelState.Clear();
             }
             model.WebConfigFile = ConvertHTAccessToWebConfig(model.HTAccessFile);
 
