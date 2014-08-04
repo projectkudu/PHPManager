@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>phpmanager</id>
+    <title>Php Manager</title>
+    <version>1.0.0</version>
+    <authors>Zain Rizvi</authors>
+    <licenseUrl>http://opensource.org/licenses/Apache-2.0</licenseUrl>
+    <projectUrl>https://github.com/projectkudu/PhpManager</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Manage the PHP settings of your site</description>
+    <iconUrl>https://raw.githubusercontent.com/projectkudu/PhpManager/master/PhpManager/Content/icon50x50.png</iconUrl>
+    <tags>php</tags>
+  </metadata>
+  <files>
+    <file src="artifacts\**\*.*" target="content" />
+  </files>
+</package>
