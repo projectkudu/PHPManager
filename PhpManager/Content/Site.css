@@ -1,4 +1,5 @@
-﻿html {
+﻿
+html {
     background-color: #e8e7e8;
     margin: 0;
     padding: 0;
@@ -378,6 +379,23 @@ textarea {
         margin-left: 0;
         margin-right: 0;
     }
+ 
+.form-group {
+    display: block;
+}
+
+    .form-group .inline {
+        display: inline-block;
+    }
+
+    .form-group textarea {
+        margin: 1em 0em 2em 0em;
+    }
+
+    form .checkbox {
+        margin: 1em 0em 2em 0em;
+        width: 500px;
+    }
 
 /* info and errors */
 .message-info {
@@ -706,3 +724,27 @@ footer div {
     }
 
 }
+
+
+/*!
+ * Bootstrap v3.0.2
+ *
+ * Copyright 2013 Twitter, Inc
+ * Licensed under the Apache License v2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Designed and built with all the love in the world @twitter by @mdo and @fat.
+ */
+.alert{padding:15px;margin-bottom:20px;border:1px solid transparent;border-radius:4px;}.alert h4{margin-top:0;color:inherit;}
+.alert .alert-link{font-weight:bold;}
+.alert>p,.alert>ul{margin-bottom:0;}
+.alert>p+p{margin-top:5px;}
+.alert-dismissable{padding-right:35px;}.alert-dismissable .close{position:relative;top:-2px;right:-21px;color:inherit;}
+.alert-success{background-color:#dff0d8;border-color:#d6e9c6;color:#468847;}.alert-success hr{border-top-color:#c9e2b3;}
+.alert-success .alert-link{color:#356635;}
+.alert-info{background-color:#d9edf7;border-color:#bce8f1;color:#3a87ad;}.alert-info hr{border-top-color:#a6e1ec;}
+.alert-info .alert-link{color:#2d6987;}
+.alert-warning{background-color:#fcf8e3;border-color:#faebcc;color:#c09853;}.alert-warning hr{border-top-color:#f7e1b5;}
+.alert-warning .alert-link{color:#a47e3c;}
+.alert-danger{background-color:#f2dede;border-color:#ebccd1;color:#b94a48;}.alert-danger hr{border-top-color:#e4b9c0;}
+.alert-danger .alert-link{color:#953b39;}
