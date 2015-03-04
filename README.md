@@ -4,10 +4,6 @@ PHP Manager is an [Azure Websites Site Extension](https://github.com/projectkudu
 
 See [this post](http://azure.microsoft.com/blog/2014/06/20/azure-web-sites-extensions/) for instructions on how to install it into an Azure Website. After it's installed, you can click the Browse button in the portal to launch it.
 
-### Documentation
-
-See the [documentation](https://github.com/projectkudu/kudu/wiki)
-
 ### License
 
 [Apache License 2.0](https://github.com/projectkudu/kudu/blob/master/LICENSE.txt)
