@@ -184,7 +184,7 @@ namespace PhpManager.Models
         public IEnumerable<PHPIniSetting> GetAllDefinedSettings()
         {
             var settingNames = GetAllDefinedSettingNames();
-            return settingNames.Select(settingName => GetSetting(settingName));
+            return settingNames.Select(settingName => GetSetting(settingName)).Where(s => s != null);
         }
 
         private static PHPIniFile LoadPhpFile(string phpFilePath)
