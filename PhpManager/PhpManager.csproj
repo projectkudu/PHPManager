@@ -15,7 +15,7 @@
     <AssemblyName>PhpManager</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
@@ -118,7 +118,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\ConversionManager.cs" />
     <Compile Include="Models\FileReader.cs" />
+    <Compile Include="Models\HTAccessModel.cs" />
     <Compile Include="Models\PHPIniFile.cs" />
     <Compile Include="Models\PhpSettings.cs" />
     <Compile Include="Models\PlacementRules.cs" />
@@ -139,7 +141,10 @@
     <Content Include="PhpInfo.php" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="applicationHost.xdt" />
+    <Content Include="applicationHost.xdt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Properties\PublishProfiles\File.pubxml" />
     <None Include="Properties\PublishProfiles\PhpSettings.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\Home\ErrorReporting.js" />
@@ -168,6 +173,7 @@
     <Content Include="Views\Home\ErrorReporting.cshtml" />
     <Content Include="Views\Home\PhpInfo.cshtml" />
     <Content Include="Views\Home\Settings.cshtml" />
+    <Content Include="Views\Home\Import.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -195,7 +201,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>16245</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:16245/</IISUrl>
+          <IISUrl>http://localhost/PhpManager</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
